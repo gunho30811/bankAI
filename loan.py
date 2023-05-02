@@ -1,5 +1,8 @@
+from flask import Flask, render_template
 import requests
 from bs4 import BeautifulSoup
+
+app = Flask(__name__)
 
 # 웹사이트 URL 리스트
 urls = [
@@ -21,9 +24,27 @@ def crawl_data(url):
         print(f"Error {response.status_code}: Unable to fetch data from {url}")
         return None
 
-# 각 URL에서 데이터를 가져옵니다.
-for url in urls:
-    data = crawl_data(url)
-    if data:
-        # 데이터를 처리하거나 저장합니다.
-        print(data)
+# # 각 URL에서 데이터를 가져옵니다.
+# for url in urls:
+#     data = crawl_data(url)
+#     if data:
+#         # 데이터를 처리하거나 저장합니다.
+#         print(data)
+
+# # 결과 리스트를 순서대로 출력합니다.
+# for index, result in enumerate(results):
+#     print(f"URL {index + 1}:")
+#     print(result)
+#     print("=" * 80)
+
+@app.route('/')
+def index():
+    results = []
+    for url in urls:
+        data = crawl_data(url)
+        if data:
+            results.append(data)
+    return render_template('index.html', results=results)
+
+if __name__ == '__main__':
+    app.run(debug=True)    
