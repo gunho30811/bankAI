@@ -23,20 +23,20 @@ def crawl_data(url):
     else:
         print(f"Error {response.status_code}: Unable to fetch data from {url}")
         return None
+def get_data_list():
+    data_list = []
+    for url in urls:
+        data = crawl_data(url)
+        if data:
+            data_list.append(data)
+    return data_list
 
-# # 각 URL에서 데이터를 가져옵니다.
-# for url in urls:
-#     data = crawl_data(url)
-#     if data:
-#         # 데이터를 처리하거나 저장합니다.
-#         print(data)
-
-# # 결과 리스트를 순서대로 출력합니다.
-# for index, result in enumerate(results):
-#     print(f"URL {index + 1}:")
-#     print(result)
-#     print("=" * 80)
-
+data_list = get_data_list()
+for index, result in enumerate(data_list):
+    print(f"URL {index + 1}:")
+    print(result)
+    print("=" * 80)
+    
 @app.route('/')
 def index():
     results = []
