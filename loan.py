@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import requests
 from bs4 import BeautifulSoup
+import naver_crawler
 
 app = Flask(__name__)
 
@@ -36,7 +37,7 @@ for index, result in enumerate(data_list):
     print(f"URL {index + 1}:")
     print(result)
     print("=" * 80)
-    
+
 @app.route('/')
 def index():
     results = []
@@ -44,7 +45,9 @@ def index():
         data = crawl_data(url)
         if data:
             results.append(data)
-    return render_template('index.html', results=results)
+
+    sido_info = naver_crawler.get_sido_info()        
+    return render_template('index.html', results=results, sido_info=sido_info)
 
 if __name__ == '__main__':
     app.run(debug=True)    
