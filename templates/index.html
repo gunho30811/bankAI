@@ -7,9 +7,41 @@
 </head>
 <body>
     <h1>Data from URLs</h1>
-    {% for result in results %}
-        <pre>{{ result }}</pre>
-        <hr>
-    {% endfor %}
+    <section>
+        <h2>Web Crawling Data</h2>
+        {% for data in data_list %}
+            <pre>{{ data }}</pre>
+            <hr>
+        {% endfor %}
+    </section>
+
+    <section>
+        <h2>Naver Real Estate Data</h2>
+        {% for data in naver_real_estate_data %}
+            <pre>{{ data }}</pre>
+            <hr>
+        {% endfor %}
+    </section>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>   
 </body>
 </html>
