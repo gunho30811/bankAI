@@ -57,7 +57,22 @@ for url in urls:
         print(data['articleRealtor']['cellPhoneNo'])
         # 전세 금액
         print(data['articleAddition']['dealOrWarrantPrc'])
-
+        # 오피스텔 이름
+        print(data['articleDetail']['articleName'])
+        # 오피스텔 위치
+        print(data['articleDetail']['exposureAddress'])
+        # 집 종류
+        print(data['articleAddition']['articleRealEstateTypeName'])        
+        #핵심 키워드
+        print(data['articleAddition']['tagList'])
+        #집 총 층수
+        print(data['articleAddition']['floorInfo'])
+        #현재 이 집 관리비
+        print('관리비 정보: ' + str(data['articleDetail']['monthlyManagementCost']))
+        #현재 이 집 융자
+        print('융자 정보: ' + str(data['articlePrice']['financePrice']))
+        #매물 설명
+        print(data['articleDetail']['detailDescription'])    
         # print(data)
     else:
         print("Failed to fetch data:", response.status_code)
