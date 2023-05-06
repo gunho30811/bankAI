@@ -17,9 +17,11 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 }
 
+
 # articleNo를 뽑아온다.
 def get_articles(page):
-    search_url = "https://new.land.naver.com/api/articles/complex/139296?realEstateType=OPST%3AOBYG%3APRE&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin=12000&priceMax=30000&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={}&complexNo=139296&buildingNos=&areaNos=&type=list&order=rank".format(page)
+    # search_url = "https://new.land.naver.com/api/articles/complex/139296?realEstateType=OPST%3AOBYG%3APRE&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin=12000&priceMax=30000&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={}&complexNo=139296&buildingNos=&areaNos=&type=list&order=rank".format(page)
+    search_url = "https://new.land.naver.com/api/articles/complex/17833?realEstateType=PRE%3AOPST&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin=0&priceMax=10000&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={}&complexNo=17833&buildingNos=&areaNos=&type=list&order=rank".format(page)
     response = requests.get(search_url, headers=headers)
     if response.status_code == 200:
         return response.json()["articleList"]
@@ -72,7 +74,7 @@ for url in urls:
         #현재 이 집 융자
         print('융자 정보: ' + str(data['articlePrice']['financePrice']))
         #매물 설명
-        print(data['articleDetail']['detailDescription'])    
+        # print(data['articleDetail']['detailDescription'])    
         # print(data)
     else:
         print("Failed to fetch data:", response.status_code)

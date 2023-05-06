@@ -4,44 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data from URLs</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Data from URLs</h1>
     <section>
-        <h2>Web Crawling Data</h2>
-        {% for data in data_list %}
-            <pre>{{ data }}</pre>
-            <hr>
-        {% endfor %}
+        <h2>지역</h2>
+        <label for="city_select">City:</label>
+        <select id="city_select">
+            <option value="">Choose City</option>
+            <!-- 도시 옵션들을 여기에 추가하세요 -->
+        </select>
+
+        <label for="gu_select">Gu:</label>
+        <select id="gu_select">
+            <option value="">Choose Gu</option>
+            <!-- 구 옵션들을 여기에 추가하세요 -->
+        </select>
+
+        <label for="dong_select">Dong:</label>
+        <select id="dong_select">
+            <option value="">Choose Dong</option>
+            <!-- 동 옵션들을 여기에 추가하세요 -->
+        </select>
+
+        <label for="min_price">최소 금액:</label>
+        <input type="number" id="min_price" min="0">
+        
+        <label for="max_price">최대 금액:</label>
+        <input type="number" id="max_price" min="0">
+
+        <button id="search_officetel_btn">오피스텔 검색</button>
+        <div id="officetel_list"></div>
+        <div id="property_details"></div>
+
     </section>
 
-    <section>
-        <h2>Naver Real Estate Data</h2>
-        {% for data in naver_real_estate_data %}
-            <pre>{{ data }}</pre>
-            <hr>
-        {% endfor %}
-    </section>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+    <script>
+        // 전체 도시 목록 가져오기
+        var city_list = {{ city_list|tojson|safe }};
+        // 도시 목록 드롭다운
+        $(document).ready(function () {
+        for (var i = 0; i < city_list.length; i++) {
+            var city = city_list[i];
+            $('#city_select').append('<option value="' + city[0] + '">' + city[1] + '</option>');
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
+    });
+        // 도시가 선택되면 구 목록을 업데이트
+        $('#city_select').on('change', function () {
+        var city_cortar_no = $(this).val();
+        $('#gu_select').html('<option value="">Choose Gu</option>');
+        $('#dong_select').html('<option value="">Choose Dong</option>');
+
+        if (city_cortar_no) {
+            $.post('/get_gu_list', {city_cortar_no: city_cortar_no}, function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var gu = response[i];
+                    $('#gu_select').append('<option value="' + gu[0] + '">' + gu[1] + '</option>');
+                }
+            });
         }
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
+    });
+
+    // 구가 선택되면 동 목록을 업데이트
+    $('#gu_select').on('change', function () {
+        var gu_cortar_no = $(this).val();
+        $('#dong_select').html('<option value="">Choose Dong</option>');
+
+        if (gu_cortar_no) {
+            $.post('/get_dong_list', {gu_cortar_no: gu_cortar_no}, function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    var dong = response[i];
+                    $('#dong_select').append('<option value="' + dong[0] + '">' + dong[1] + '</option>');
+                }
+            });
         }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+    });
+
+    $('#search_officetel_btn').on('click', function () {
+        var dong_code = $('#dong_select').val();
+
+        if (dong_code) {
+            $.post('/get_officetel_list', {dong_code: dong_code}, function (response) {
+                var officetel_list_html = '<ul>';
+                for (var i = 0; i < response.length; i++) {
+                    var officetel = response[i];
+                    officetel_list_html += `<li>${officetel[0]} - ${officetel[1]}</li>`;
+                }
+                officetel_list_html += '</ul>';
+                $('#officetel_list').html(officetel_list_html);
+            });
         }
-        tr:hover {
-            background-color: #ddd;
-        }
-    </style>   
+    });
+    </script>
+
+
 </body>
 </html>
