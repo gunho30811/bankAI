@@ -82,9 +82,24 @@
     });
 
     $('#search_officetel_btn').on('click', function () {
-        var dong_code = $('#dong_select').val();
+    var dong_code = $('#dong_select').val();
+    var min_price = $('#min_price').val();
+    var max_price = $('#max_price').val();
 
-        if (dong_code) {
+    if (dong_code) {
+        if (min_price && max_price) {
+            // 최소/최대 금액이 설정된 경우
+            $.post('/search', {dongCode: dong_code, minPrice: min_price, maxPrice: max_price}, function (response) {
+                var officetel_list_html = '<ul>';
+                for (var i = 0; i < response.length; i++) {
+                    var officetel = response[i];
+                    officetel_list_html += `<li><a href="#" class="officetel-link" data-id="${officetel.articleNo}">${officetel.articleName}</a></li>`;
+                }
+                officetel_list_html += '</ul>';
+                $('#officetel_list').html(officetel_list_html);
+            });
+        } else {
+            // 최소/최대 금액이 설정되지 않은 경우
             $.post('/get_officetel_list', {dong_code: dong_code}, function (response) {
                 var officetel_list_html = '<ul>';
                 for (var i = 0; i < response.length; i++) {
@@ -95,39 +110,21 @@
                 $('#officetel_list').html(officetel_list_html);
             });
         }
-    });
-
-    // 검색 버튼을 클릭하면 최소/최대 금액을 포함한 검색 결과를 가져옴
-$('#search_officetel_btn').on('click', function () {
-    var dong_code = $('#dong_select').val();
-    var min_price = $('#min_price').val();
-    var max_price = $('#max_price').val();
-
-    if (dong_code && min_price && max_price) {
-        $.post('/search', {dongCode: dong_code, minPrice: min_price, maxPrice: max_price}, function (response) {
-            var officetel_list_html = '<ul>';
-            for (var i = 0; i < response.length; i++) {
-                var officetel = response[i];
-                officetel_list_html += `<li><a href="#" class="officetel-link" data-id="${officetel[0]}">${officetel[1]}</a></li>`;
-            }
-            officetel_list_html += '</ul>';
-            $('#officetel_list').html(officetel_list_html);
-        });
     }
 });
 
 // 오피스텔 링크를 클릭하면 상세 정보를 가져옴
-$(document).on('click', '.officetel-link', function (event) {
-    event.preventDefault();
-    var officetel_id = $(this).data('id');
-    $.post('/get_officetel_detail', {officetel_id: officetel_id}, function (response) {
-        var officetel_detail_html = '<h3>' + response.name + '</h3>';
-        officetel_detail_html += '<p>주소: ' + response.address + '</p>';
-        officetel_detail_html += '<p>가격: ' + response.price + '</p>';
-        officetel_detail_html += '<p>면적: ' + response.area + '</p>';
-        $('#officetel_detail').html(officetel_detail_html);
-    });
-});
+// $(document).on('click', '.officetel-link', function (event) {
+//     event.preventDefault();
+//     var officetel_id = $(this).data('id');
+//     $.post('/get_officetel_detail', {officetel_id: officetel_id}, function (response) {
+//         var officetel_detail_html = '<h3>' + response.name + '</h3>';
+//         officetel_detail_html += '<p>주소: ' + response.address + '</p>';
+//         officetel_detail_html += '<p>가격: ' + response.price + '</p>';
+//         officetel_detail_html += '<p>면적: ' + response.area + '</p>';
+//         $('#officetel_detail').html(officetel_detail_html);
+//     });
+// });
     </script>
 
 

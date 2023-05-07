@@ -119,15 +119,29 @@ headers = {
     "Sec-Fetch-Site": "same-origin",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 }
-def get_articles(dong_code, page, min_price, max_price):
+def get_articles(complexNo, page, min_price, max_price):
     # search_url 수정
-    search_url = f"https://new.land.naver.com/api/articles/complex/{dong_code}?realEstateType=OPST&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin={min_price}&priceMax={max_price}&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={page}&buildingNos=&areaNos=&type=list&order=rank"
+    search_url = f"https://new.land.naver.com/api/articles/complex/{complexNo}?realEstateType=OPST&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin={min_price}&priceMax={max_price}&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={page}&buildingNos=&areaNos=&type=list&order=rank"
+    
     response = requests.get(search_url, headers=headers)
     if response.status_code == 200:
-        return response.json()["articleList"]
+        try:
+            return response.json()["articleList"]
+        except json.decoder.JSONDecodeError:
+            print(f"JSONDecodeError occurred for complexNo: {complexNo}, page: {page}, min_price: {min_price}, max_price: {max_price}")
+            return []
     else:
         print("Failed to fetch data:", response.status_code)
         return []
+
+def get_all_articles(dong_code, page, min_price, max_price):
+    complex_nos = get_officetel_list(dong_code)
+    all_articles = []
+    for complexNo, _ in complex_nos:
+        articles = get_articles(complexNo, page, min_price, max_price)
+        all_articles.extend(articles)
+
+    return all_articles
 
 def search_properties(dong_code, min_price, max_price):
     page = 1
@@ -168,3 +182,11 @@ def search_properties(dong_code, min_price, max_price):
             print("Failed to fetch data:", response.status_code)
 
     return properties
+
+complexNo = "17833"  # 임시 동 코드
+dong_code = "1168010100"
+page = 1
+min_price = 0
+max_price = 10000
+articles = get_all_articles(dong_code, page, min_price, max_price)
+print(articles)
