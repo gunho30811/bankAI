@@ -49,7 +49,7 @@
             var city = city_list[i];
             $('#city_select').append('<option value="' + city[0] + '">' + city[1] + '</option>');
         }
-    });
+        });
         // 도시가 선택되면 구 목록을 업데이트
         $('#city_select').on('change', function () {
         var city_cortar_no = $(this).val();
@@ -96,6 +96,38 @@
             });
         }
     });
+
+    // 검색 버튼을 클릭하면 최소/최대 금액을 포함한 검색 결과를 가져옴
+$('#search_officetel_btn').on('click', function () {
+    var dong_code = $('#dong_select').val();
+    var min_price = $('#min_price').val();
+    var max_price = $('#max_price').val();
+
+    if (dong_code && min_price && max_price) {
+        $.post('/search', {dongCode: dong_code, minPrice: min_price, maxPrice: max_price}, function (response) {
+            var officetel_list_html = '<ul>';
+            for (var i = 0; i < response.length; i++) {
+                var officetel = response[i];
+                officetel_list_html += `<li><a href="#" class="officetel-link" data-id="${officetel[0]}">${officetel[1]}</a></li>`;
+            }
+            officetel_list_html += '</ul>';
+            $('#officetel_list').html(officetel_list_html);
+        });
+    }
+});
+
+// 오피스텔 링크를 클릭하면 상세 정보를 가져옴
+$(document).on('click', '.officetel-link', function (event) {
+    event.preventDefault();
+    var officetel_id = $(this).data('id');
+    $.post('/get_officetel_detail', {officetel_id: officetel_id}, function (response) {
+        var officetel_detail_html = '<h3>' + response.name + '</h3>';
+        officetel_detail_html += '<p>주소: ' + response.address + '</p>';
+        officetel_detail_html += '<p>가격: ' + response.price + '</p>';
+        officetel_detail_html += '<p>면적: ' + response.area + '</p>';
+        $('#officetel_detail').html(officetel_detail_html);
+    });
+});
     </script>
 
 

@@ -119,3 +119,52 @@ headers = {
     "Sec-Fetch-Site": "same-origin",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 }
+def get_articles(dong_code, page, min_price, max_price):
+    # search_url 수정
+    search_url = f"https://new.land.naver.com/api/articles/complex/{dong_code}?realEstateType=OPST&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin={min_price}&priceMax={max_price}&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={page}&buildingNos=&areaNos=&type=list&order=rank"
+    response = requests.get(search_url, headers=headers)
+    if response.status_code == 200:
+        return response.json()["articleList"]
+    else:
+        print("Failed to fetch data:", response.status_code)
+        return []
+
+def search_properties(dong_code, min_price, max_price):
+    page = 1
+    all_article_nos = []
+
+    while True:
+        articles = get_articles(dong_code, page, min_price, max_price)
+        if not articles:
+            break
+
+        for article in articles:
+            all_article_nos.append(article["articleNo"])
+
+        page += 1
+
+    properties = []
+    urls = [f"https://new.land.naver.com/api/articles/{article_no}?complexNo=" for article_no in all_article_nos]
+
+    for url in urls:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            property_info = {
+                "representativeName": data['articleRealtor']['representativeName'],
+                "address": data['articleRealtor']['address'],
+                "cellPhoneNo": data['articleRealtor']['cellPhoneNo'],
+                "dealOrWarrantPrc": data['articleAddition']['dealOrWarrantPrc'],
+                "articleName": data['articleDetail']['articleName'],
+                "exposureAddress": data['articleDetail']['exposureAddress'],
+                "articleRealEstateTypeName": data['articleAddition']['articleRealEstateTypeName'],
+                "tagList": data['articleAddition']['tagList'],
+                "floorInfo": data['articleAddition']['floorInfo'],
+                "monthlyManagementCost": data['articleDetail']['monthlyManagementCost'],
+                "financePrice": data['articlePrice']['financePrice']
+            }
+            properties.append(property_info)
+        else:
+            print("Failed to fetch data:", response.status_code)
+
+    return properties
