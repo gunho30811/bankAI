@@ -23,6 +23,8 @@ def get_articles(page):
     # search_url = "https://new.land.naver.com/api/articles/complex/139296?realEstateType=OPST%3AOBYG%3APRE&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin=12000&priceMax=30000&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={}&complexNo=139296&buildingNos=&areaNos=&type=list&order=rank".format(page)
     search_url = "https://new.land.naver.com/api/articles/complex/17833?realEstateType=PRE%3AOPST&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin=0&priceMax=10000&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={}&complexNo=17833&buildingNos=&areaNos=&type=list&order=rank".format(page)
     response = requests.get(search_url, headers=headers)
+    # print(response.text)
+    # print(response.status_code)
     if response.status_code == 200:
         return response.json()["articleList"]
     else:

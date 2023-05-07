@@ -121,7 +121,7 @@ headers = {
 }
 def get_articles(complexNo, page, min_price, max_price):
     # search_url 수정
-    search_url = f"https://new.land.naver.com/api/articles/complex/{complexNo}?realEstateType=OPST&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin={min_price}&priceMax={max_price}&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={page}&buildingNos=&areaNos=&type=list&order=rank"
+    search_url = "https://new.land.naver.com/api/articles/complex/{0}?realEstateType=OPST&tradeType=B1&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin={1}&priceMax={2}&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={3}&buildingNos=&areaNos=&type=list&order=rank".format(complexNo, min_price, max_price, page)
     
     response = requests.get(search_url, headers=headers)
     if response.status_code == 200:
@@ -143,12 +143,12 @@ def get_all_articles(dong_code, page, min_price, max_price):
 
     return all_articles
 
-def search_properties(dong_code, min_price, max_price):
+def search_properties(complexNo, min_price, max_price):
     page = 1
     all_article_nos = []
 
     while True:
-        articles = get_articles(dong_code, page, min_price, max_price)
+        articles = get_articles(complexNo, page, min_price, max_price)
         if not articles:
             break
 
