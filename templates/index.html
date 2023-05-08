@@ -111,7 +111,7 @@
                 var officetel_list_html = '<ul>';
                 for (var i = 0; i < response.length; i++) {
                     var property = response[i];
-                    officetel_list_html += `<li><a href="#" class="officetel-link" data-id="${property.articleName}">${property.representativeName}, ${property.address}, ${property.cellPhoneNo}, ${property.dealOrWarrantPrc}, ${property.exposureAddress}, ${property.articleRealEstateTypeName}, ${property.tagList.join(', ')}, ${property.floorInfo}, ${property.monthlyManagementCost}, ${property.financePrice}</a></li>`;
+                    officetel_list_html += `<li><a href="#" class="officetel-link" data-id="${property.articleName}">${property.representativeName}, ${property.address}, ${property.cellPhoneNo}, ${property.dealOrWarrantPrc}, ${property.articleName}, ${property.exposureAddress}, ${property.articleRealEstateTypeName}, ${property.tagList.join(', ')}, ${property.floorInfo}, ${property.monthlyManagementCost}, ${property.financePrice}</a></li>`;
                 }
                 officetel_list_html += '</ul>';
                 $('#officetel_list').html(officetel_list_html);
