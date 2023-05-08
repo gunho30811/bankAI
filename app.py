@@ -36,7 +36,7 @@ def search():
     if not dong_code or min_price is None or max_price is None:
         return "모든 필드를 입력해주세요.", 400
     
-    results = naver_crawler.search_properties(dong_code, min_price, max_price)
+    results = naver_crawler.get_all_articles(dong_code, min_price, max_price)
     return jsonify(results)
 
 if __name__ == '__main__':
