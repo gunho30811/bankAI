@@ -4,41 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data from URLs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6en8XCp+HHAAK5GSLf2xlYtvJ8U2Q4U+9cuEnJoa3" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Data from URLs</h1>
-    <section>
-        <h2>지역</h2>
-        <label for="city_select">City:</label>
-        <select id="city_select">
-            <option value="">Choose City</option>
-            <!-- 도시 옵션들을 여기에 추가하세요 -->
-        </select>
-
-        <label for="gu_select">Gu:</label>
-        <select id="gu_select">
-            <option value="">Choose Gu</option>
-            <!-- 구 옵션들을 여기에 추가하세요 -->
-        </select>
-
-        <label for="dong_select">Dong:</label>
-        <select id="dong_select">
-            <option value="">Choose Dong</option>
-            <!-- 동 옵션들을 여기에 추가하세요 -->
-        </select>
-
-        <label for="min_price">최소 금액:</label>
-        <input type="number" id="min_price" min="0">
-        
-        <label for="max_price">최대 금액:</label>
-        <input type="number" id="max_price" min="0">
-
-        <button id="search_officetel_btn">오피스텔 검색</button>
-        <div id="officetel_list"></div>
-        <div id="property_details"></div>
-
-    </section>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Data from URLs</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/5v5z1zZlF4D/J5SL6G1rn3/+i3wC7um6aa5S6TR" crossorigin="anonymous">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        </head>
+        <body>
+            <div class="container">
+                <h1 class="mb-4">Data from URLs</h1>
+                <form>
+                    <div class="mb-3">
+                        <label for="city_select" class="form-label">City:</label>
+                        <select id="city_select" class="form-select">
+                            <option value="">Choose City</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gu_select" class="form-label">Gu:</label>
+                        <select id="gu_select" class="form-select">
+                            <option value="">Choose Gu</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dong_select" class="form-label">Dong:</label>
+                        <select id="dong_select" class="form-select">
+                            <option value="">Choose Dong</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="min_price" class="form-label">최소 금액:</label>
+                        <input type="number" id="min_price" min="0" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="max_price" class="form-label">최대 금액:</label>
+                        <input type="number" id="max_price" min="0" class="form-control">
+                    </div>
+                    <button type="button" id="search_officetel_btn" class="btn btn-primary">오피스텔 검색</button>
+                </form>
+                <div id="officetel_list" class="mt-4"></div>
+                <div id="property_details" class="mt-4"></div>
+            </div>
+        </section>
+    </div>
+</div>
 
     <script>
         // 전체 도시 목록 가져오기
