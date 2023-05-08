@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import naver_crawler
-from chatgpt import ask_chatgpt
+from chatgpt import ask_chatgpt, property_summary
 
 app = Flask(__name__)
 
@@ -38,13 +38,20 @@ def search():
         return "모든 필드를 입력해주세요.", 400
     
     results = naver_crawler.get_all_articles(dong_code, min_price, max_price)
+    for result in results:
+        result["summary"] = property_summary(result)
     return jsonify(results)
 
 @app.route('/ask_chatgpt', methods=['POST'])
 def ask_chatgpt_route():
     question = request.form['question']
-    text_data = get_text_data()  # text_data 가져오는 함수입니다. 이미 구현되어 있다고 가정합니다.
-    answer = ask_chatgpt(f"{text_data}\n\n{question}")
+    property_data = request.form.get('property_data')  # 데이터를 전달받습니다.
+    import json
+    property = json.loads(property_data)
+    summary = property_summary(property)
+
+    # 질문에 답변하기 전에 요약문을 추가합니다.
+    answer = ask_chatgpt(f"{summary}\n\n{question}")
     return jsonify(answer=answer)
 
 if __name__ == '__main__':

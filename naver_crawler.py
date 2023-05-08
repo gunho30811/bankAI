@@ -201,13 +201,3 @@ def search_properties(complexNo, min_price, max_price):
         else:
             print("Failed to fetch data:", response.status_code)
     return properties
-
-# complexNo = "17833"  # 임시 동 코드
-# dong_code = "1168010100"
-# page = 1
-# min_price = 0
-# max_price = 10000
-# articles = get_all_articles(dong_code, page, min_price, max_price)
-# print(articles)
-# properties = search_properties(complexNo, min_price, max_price)
-# print(properties)
