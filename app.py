@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import naver_crawler
+from chatgpt import ask_chatgpt
 
 app = Flask(__name__)
 
@@ -38,6 +39,13 @@ def search():
     
     results = naver_crawler.get_all_articles(dong_code, min_price, max_price)
     return jsonify(results)
+
+@app.route('/ask_chatgpt', methods=['POST'])
+def ask_chatgpt_route():
+    question = request.form['question']
+    text_data = get_text_data()  # text_data 가져오는 함수입니다. 이미 구현되어 있다고 가정합니다.
+    answer = ask_chatgpt(f"{text_data}\n\n{question}")
+    return jsonify(answer=answer)
 
 if __name__ == '__main__':
     app.run(debug=True)
