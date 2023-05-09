@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     city_list = naver_crawler.get_sido_info()
-    # 다른 필요한 데이터들을 가져오는 코드가 있다면 여기에 추가하세요.
+    # 다른 필요한 데이터들을 가져오는 코드가 있다면 여기에 추가.
     return render_template('index.html', city_list=city_list)
 
 @app.route('/get_gu_list', methods=['POST'])
@@ -45,12 +45,12 @@ def search():
 @app.route('/ask_chatgpt', methods=['POST'])
 def ask_chatgpt_route():
     question = request.form['question']
-    property_data = request.form.get('property_data')  # 데이터를 전달받습니다.
+    property_data = request.form.get('property_data')  # 데이터를 전달.
     import json
     property = json.loads(property_data)
     summary = property_summary(property)
 
-    # 질문에 답변하기 전에 요약문을 추가합니다.
+    # 질문에 답변하기 전에 요약문을 추가.
     answer = ask_chatgpt(f"{summary}\n\n{question}")
     return jsonify(answer=answer)
 
